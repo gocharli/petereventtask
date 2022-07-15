@@ -8,8 +8,7 @@
 <body>
 
 <section class="container">
-    <h1 class="page-header text-center">Login</h1>
-    <div class="row p-2">
+    <div class="row mt-4 p-2">
 		<div class="col-sm-4 col-sm-offset-4">
 			<div class="login-panel panel panel-primary">
 		        <div class="panel-heading">
@@ -19,13 +18,13 @@
 		    	<div class="panel-body">
 		        	<form method="POST" action="<?php echo base_url(); ?>/user/login">
 		            	<fieldset>
-		                	<div class="form-group mb-2">
+		                	<div class="form-group mb-4">
 		                    	<input class="form-control" placeholder="Email" type="email" name="email" required>
 		                	</div>
-		                	<div class="form-group mb-2">
+		                	<div class="form-group mb-4">
 		                    	<input class="form-control" placeholder="Password" type="password" name="password" required>
 		                	</div>
-		                	<button type="submit" class="btn btn-lg btn-primary btn-block"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+		                	<button type="submit" class="btn btn-lg btn-primary mb-2 btn-block"><span class="glyphicon glyphicon-log-in"></span> Login</button>
 		            	</fieldset>
 		        	</form>
                     <div class="col-12 col-sm-8 text-right">

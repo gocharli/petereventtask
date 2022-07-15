@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password: *</label>
-                    <input type="password" class="form-control" id="password" name="password" value="<?php echo set_value('password'); ?>" required>
+                    <input type="password" class="form-control" id="password" pattern=".{7,}" title="Seven or more characters" name="password" value="<?php echo set_value('password'); ?>" required>
                 </div>
                 <div class="form-group mb-2">
                     <label for="password_confirm">Confirm Password: *</label>

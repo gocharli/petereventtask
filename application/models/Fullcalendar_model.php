@@ -1,36 +1,40 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
+
 class Fullcalendar_model extends CI_Model
 {
-    function __construct(){
-		parent::__construct();
-		$this->load->database();
-	}
-
-    function fetch_all_event(){
-    // $this->db->order_by('id');
-    // return $this->db->get('tbl_events');
-        $query = $this->db->get('tbl_events');
-		return $query->result();
+    public function __construct(){
+        parent::__construct();
+        $this->load->database();
+    }
+    public function fetch_all_event(){
+        $query = $this->db->get('calendar_plugin');
+            return $query->result();
     }
 
-    function insert_event($data)
+    public function insert_event($data)
     {
-    $this->db->insert('tbl_events', $data);
+    $this->db->insert('calendar_plugin', $data);
     }
 
-    function update_event($data, $id)
+    public function update_event($data, $id)
     {
-        $this->db->where('tbl_events.id', $id);
-		return $this->db->update('tbl_events', $data);
+    $this->db->where('fw_id', $id);
+    $this->db->update('calendar_plugin', $data);
     }
 
-    function delete_event($id)
+    public function delete_event($id)
     {
-        $this->db->where('id', $id);
-        return $this->db->delete('tbl_events');
+    $this->db->where('fw_id', $id);
+    $this->db->delete('calendar_plugin');
     }
+
+    public function update_insert($data, $id)
+    {
+    $this->db->where('fw_id', $id);
+    $this->db->update('calendar_plugin', $data);
+    }
+
 }
 
-?>
+?> 
