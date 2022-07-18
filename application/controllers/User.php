@@ -75,7 +75,7 @@ class User extends CI_Controller {
                 
                 // Email body content
                 $mailContent = "<h1>Send HTML Email using SMTP in CodeIgniter</h1>
-                    <p>Hello hope you are doing well I am  Parker Rosan Php web Developer. This is a test email sending using SMTP mail server using PHPMailer.</p>";
+                    <p>Hello hope you are doing well I am Parker Rosan Php web Developer. This is a test email sending using SMTP mail server using PHPMailer.</p>";
                 $mail->Body = $mailContent;
                 
                 // Send email
@@ -140,7 +140,8 @@ class User extends CI_Controller {
 
 		//restrict users to go to home if not logged in
 		if($this->session->get_userdata('user')){
-			$this->load->view('dashboard');
+			$user_data['user_data'] = $this->Users_model->getAllUsers();
+			$this->load->view('dashboard',$user_data);
 		}
 		else{
 			redirect('/');

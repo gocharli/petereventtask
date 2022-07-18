@@ -14,11 +14,10 @@ class Calendar extends CI_Controller{
     $event_data = $this->Fullcalendar_model->fetch_all_event();
     foreach($event_data as $row){
       $data[] = array(
-        'id' => $row->fw_id,
-        'title' => $row->fw_title,
-        'start' => $row->fw_start_event,
-        'end' => $row->fw_end_event
-        // 'tags' => $row->event_tags
+        'id' => $row->event_id,
+        'title' => $row->event_title,
+        'start' => $row->start_event,
+        'end' => $row->end_event
       );
     }
     
@@ -26,26 +25,36 @@ class Calendar extends CI_Controller{
   }
   public function insert(){
     $startdate=$this->input->post('start');
+    $reminderdate=date('Y-m-d', strtotime($startdate. ' - 1 day')) ; // change according to your reminder time 1 day or more
+   
     $enddate=$this->input->post('end');
+
     $data = array(
-      'fw_title'  => $this->input->post('title'),
-      'fw_start_event'=> $startdate.' '.$this->input->post('timestart'),
-      'fw_end_event' => $enddate.' '.$this->input->post('timeend'),
-      'user_email' => $this->input->post('email'),
-      'event_tags' => $this->input->post('tags')
+      'event_title'  => $this->input->post('title'),
+      'start_event'=> $startdate.' '.$this->input->post('timestart'),
+      'end_event' => $enddate.' '.$this->input->post('timeend'),
+      // 'user_email' => $this->input->post('email'),
+      'user_email' => implode(',', $this->input->post('user[]')),
+      'event_tags' => implode(',', $this->input->post('tags[]')),
+      'event_description' => $this->input->post('event_desc'),
+      'reminder_date' => $reminderdate
     );
 
     $res=$this->Fullcalendar_model->insert_event($data);
     
   }
   public function insert_day(){
+    $startdate=$this->input->post('start');
+    $reminderdate=date('Y-m-d', strtotime($startdate. ' - 1 day')) ; // change according to your reminder time 1 day or more
     if($this->input->post('title')){
         $data = array(
-          'fw_title'  => $this->input->post('title'),
-          'fw_start_event'=>$this->input->post('start'),
-          'fw_end_event' => $this->input->post('end'),
-          'user_email' => $this->input->post('email'),
-          'event_tags' => $this->input->post('tags')
+          'event_title'  => $this->input->post('title'),
+          'start_event'=>$this->input->post('start'),
+          'end_event' => $this->input->post('end'),
+          'user_email' => implode(',', $this->input->post('user[]')),
+          'event_tags' => implode(',', $this->input->post('tags[]')),
+          'event_description' => $this->input->post('event_desc'),
+          'reminder_date' => $reminderdate
       );
         $res=$this->Fullcalendar_model->insert_event($data);
       echo json_encode($res);
@@ -54,9 +63,9 @@ class Calendar extends CI_Controller{
   }
   public function update(){
       $data = array(
-        'fw_title'  => $this->input->post('title'),
-        'fw_start_event'=> $this->input->post('start'),
-        'fw_end_event' => $this->input->post('end')
+        'event_title'  => $this->input->post('title'),
+        'start_event'=> $this->input->post('start'),
+        'end_event' => $this->input->post('end')
       );
 
       $res=$this->Fullcalendar_model->update_event($data, $this->input->post('id'));
@@ -68,22 +77,22 @@ class Calendar extends CI_Controller{
     }
   }
   public function get_cal_data(){
-    $a=$this->db->from('calendar_plugin')->where('fw_id',$this->input->post('id'))->get()->row();
+    $a=$this->db->from('tbl_events')->where('event_id',$this->input->post('id'))->get()->row();
     // print_r($a);die();
-    $start=$a->fw_start_event;
-    $end=$a->fw_end_event;
+    $start=$a->start_event;
+    $end=$a->end_event;
 
     $start_date=date('Y-m-d', strtotime( $start ) );
     $start_time=date('H:i', strtotime( $start ) );
     $end_date=date('Y-m-d', strtotime( $end ) );
     $end_time=date('H:i', strtotime( $end ) );
     $data = array(
-      'fw_title'  => $a->fw_title,
-      'fw_id'  => $a->fw_id,
-      'fw_start_date'=> $start_date,
-      'fw_start_time' => $start_time,
-      'fw_end_date' => $end_date,
-      'fw_end_time' => $end_time
+      'event_title'  => $a->event_title,
+      'event_id'  => $a->event_id,
+      'start_date'=> $start_date,
+      'start_time' => $start_time,
+      'end_date' => $end_date,
+      'end_time' => $end_time
     ); 
     echo json_encode ($data);
   }
@@ -99,9 +108,9 @@ class Calendar extends CI_Controller{
           $end=$date.' '.$end_time.':00';
 
           $data = array(
-          'fw_title'=> $this->input->post('up_title'),
-            'fw_start_event'=> $start,
-            'fw_end_event' => $end
+          'event_title'=> $this->input->post('up_title'),
+            'start_event'=> $start,
+            'end_event' => $end
           );
 
           $this->Fullcalendar_model->update_insert($data, $this->input->post('up_id'));
@@ -112,4 +121,3 @@ class Calendar extends CI_Controller{
 }
 
 ?>
-

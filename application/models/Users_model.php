@@ -9,6 +9,7 @@ class Users_model extends CI_Model {
 	}
  
 	public function getAllUsers(){
+		$this->db->order_by('user_id');
 		$query = $this->db->get('users');
 		return $query->result(); 
 	}

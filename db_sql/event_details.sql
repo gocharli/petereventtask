@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2022 at 01:59 PM
+-- Generation Time: Jul 18, 2022 at 03:10 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -24,29 +24,35 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `calendar_plugin`
+-- Table structure for table `tbl_events`
 --
 
-CREATE TABLE `calendar_plugin` (
-  `fw_id` int(11) NOT NULL,
-  `fw_title` varchar(300) DEFAULT NULL,
-  `fw_start_event` datetime DEFAULT NULL,
-  `fw_end_event` datetime DEFAULT NULL,
+CREATE TABLE `tbl_events` (
+  `event_id` int(11) NOT NULL,
+  `event_title` varchar(300) DEFAULT NULL,
+  `start_event` datetime DEFAULT NULL,
+  `end_event` datetime DEFAULT NULL,
   `user_email` varchar(128) NOT NULL,
   `event_tags` varchar(128) NOT NULL,
-  `fw_timestamp` timestamp NULL DEFAULT current_timestamp()
+  `event_description` varchar(512) NOT NULL,
+  `reminder_date` date NOT NULL,
+  `event_timestamp` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `calendar_plugin`
+-- Dumping data for table `tbl_events`
 --
 
-INSERT INTO `calendar_plugin` (`fw_id`, `fw_title`, `fw_start_event`, `fw_end_event`, `user_email`, `event_tags`, `fw_timestamp`) VALUES
-(1, 'Google', '2022-07-18 11:00:00', '2022-07-22 04:00:00', 'dshah5383@gmail.com', 'SEO, Adsense', '2022-07-15 04:44:08'),
-(2, 'YoutubeTestEvent', '2022-08-01 11:00:00', '2022-08-01 22:00:00', '0', '', '2022-07-15 05:11:43'),
-(3, 'Testing', '2022-07-26 14:00:00', '2022-07-27 00:00:00', 'dshah5383@gmail.com', 'Test, Testing, testtwo', '2022-07-15 05:29:34'),
-(5, 'DayEvent', '2022-07-15 17:00:00', '2022-07-15 19:00:00', '0', '', '2022-07-15 07:03:15'),
-(6, 'CryptoEvent', '2022-07-27 18:00:00', '2022-07-29 16:00:00', 'admin@admin.com', 'BTCUSD. XRPUSD, Cryptocurrency', '2022-07-15 10:16:56');
+INSERT INTO `tbl_events` (`event_id`, `event_title`, `start_event`, `end_event`, `user_email`, `event_tags`, `event_description`, `reminder_date`, `event_timestamp`) VALUES
+(1, 'Google', '2022-07-18 11:00:00', '2022-07-21 04:00:00', 'dshah5383@gmail.com', 'SEO, Adsense', '', '0000-00-00', '2022-07-15 04:44:08'),
+(2, 'YoutubeTestEvent', '2022-08-01 11:00:00', '2022-08-01 22:00:00', '0', '', '', '0000-00-00', '2022-07-15 05:11:43'),
+(5, 'DayEvent', '2022-07-20 12:30:00', '2022-07-20 14:30:00', '0', 'EventData', '', '0000-00-00', '2022-07-15 07:03:15'),
+(6, 'CryptoEvent', '2022-08-03 18:00:00', '2022-08-05 16:00:00', 'admin@admin.com,dshah5383@gmail.com', 'BTCUSD, XRPUSD, Cryptocurrency', '', '0000-00-00', '2022-07-15 10:16:56'),
+(8, 'EventTwo', '2022-07-21 01:30:00', '2022-07-21 09:00:00', 'admin@admin.com', '', '', '0000-00-00', '2022-07-18 04:27:25'),
+(9, 'testevent', '2022-07-28 10:00:00', '2022-07-28 20:00:00', 'dshah5383@gmail.com', 'testone, testtwo', '', '2022-07-24', '2022-07-18 05:30:48'),
+(10, 'Ghadeer Event', '2022-07-26 19:00:00', '2022-07-20 11:00:00', 'admin@admin.com', 'Ghadeer,Khum_e_ghadeer', 'Eid-e Ghadir, marking the anniversary of an important event in Muslim history.', '0000-00-00', '2022-07-18 07:24:36'),
+(11, 'MultiUsers', '2022-07-20 16:00:00', '2022-07-25 20:00:00', 'dshah5383@gmail.com,theshahzad2019@gmail.com,admin@admin.com', 'tags,multitags', 'LONG DESCRIPTION OF MULTIUSERS', '0000-00-00', '2022-07-18 09:36:32'),
+(12, 'Telecommuication', '2022-07-22 10:00:00', '2022-07-26 18:00:00', 'dshah5383@gmail.com,theshahzad2019@gmail.com', 'PTCL,ufone,zong,Nayatel', 'Lorem Ipsum especio re tuore countreca', '2022-07-21', '2022-07-18 12:05:50');
 
 -- --------------------------------------------------------
 
@@ -77,10 +83,10 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `code`, `active
 --
 
 --
--- Indexes for table `calendar_plugin`
+-- Indexes for table `tbl_events`
 --
-ALTER TABLE `calendar_plugin`
-  ADD PRIMARY KEY (`fw_id`);
+ALTER TABLE `tbl_events`
+  ADD PRIMARY KEY (`event_id`);
 
 --
 -- Indexes for table `users`
@@ -93,10 +99,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `calendar_plugin`
+-- AUTO_INCREMENT for table `tbl_events`
 --
-ALTER TABLE `calendar_plugin`
-  MODIFY `fw_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `tbl_events`
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`

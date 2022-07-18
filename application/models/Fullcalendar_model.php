@@ -8,33 +8,33 @@ class Fullcalendar_model extends CI_Model
         $this->load->database();
     }
     public function fetch_all_event(){
-        $query = $this->db->get('calendar_plugin');
+        $query = $this->db->get('tbl_events');
             return $query->result();
     }
 
     public function insert_event($data)
     {
-    $this->db->insert('calendar_plugin', $data);
+    $this->db->insert('tbl_events', $data);
     }
 
     public function update_event($data, $id)
     {
-    $this->db->where('fw_id', $id);
-    $this->db->update('calendar_plugin', $data);
+    $this->db->where('event_id', $id);
+    $this->db->update('tbl_events', $data);
     }
 
     public function delete_event($id)
     {
-    $this->db->where('fw_id', $id);
-    $this->db->delete('calendar_plugin');
+    $this->db->where('event_id', $id);
+    $this->db->delete('tbl_events');
     }
 
     public function update_insert($data, $id)
     {
-    $this->db->where('fw_id', $id);
-    $this->db->update('calendar_plugin', $data);
+    $this->db->where('event_id', $id);
+    $this->db->update('tbl_events', $data);
     }
 
 }
 
-?> 
+?>
