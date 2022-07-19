@@ -33,7 +33,6 @@
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -43,8 +42,8 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <!-- Select2 -->
     <link rel="stylesheet" href="<?= base_url(); ?>plugins/select2/css/select2.min.css">
@@ -54,6 +53,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
     <script src="<?= base_url(); ?>plugins/select2/js/select2.full.min.js"></script>
     <script>
     $(document).ready(function() {
@@ -341,8 +346,8 @@
 
 <body>
     <section class="container mt-2 mb-2">
-        <div class="row p-2">
-            <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6 mb-2">
 
                 <h2>Welcome to Homepage </h2>
                 <h4>User Info:</h4>
@@ -351,6 +356,7 @@
                 <a href="<?php echo base_url(); ?>/user/logout" class="btn btn-danger">Logout</a>
                 <a href="<?php echo base_url(); ?>Roadmap/index" class="btn btn-success">View Roadmap</a>
                 <a href="<?php echo base_url(); ?>Roadmap/fetch_event" class="btn btn-primary">View Events</a>
+                <a href="<?php echo base_url(); ?>user/get_allusers" class="btn btn-info">View Users</a>
             </div>
         </div>
     </section>
@@ -381,8 +387,8 @@
                                     </div>
                                     <div class="col-md-12 mt-2">
                                         <label>Add Users</label>
-                                        <select class="form-control" name="user[]" style="width: 100%;"
-                                            data-live-search="true" multiple required>
+                                        <select class="form-control" id="user" name="user[]" style="width: 100%;"
+                                            multiple data-live-search="true" required>
                                             <?php foreach ($user_data as $row) {?>
                                             <option value="<?php echo $row->email;?>">
                                                 <?php echo $row->username;?></option>
@@ -391,10 +397,9 @@
                                     </div>
                                     <div class="col-md-12 mt-2">
                                         <label>Tags</label>
-                                        <select class="form-control" id="tags" name="tags[]"
-                                            multiple="multiple" data-placeholder="Enter Tags"
-                                            style="width: 100%;">
-                                        </select>                          
+                                        <select class="form-control" id="tags" name="tags[]" multiple="multiple"
+                                            data-placeholder="Enter Tags" style="width: 100%;">
+                                        </select>
                                     </div>
                                     <div class="col-md-12 mt-2">
                                         <label>Description</label>
@@ -524,10 +529,9 @@
                                     </div>
                                     <div class="col-md-12 mt-2">
                                         <label>Tags</label>
-                                        <select class="form-control" id="tags" name="tags[]"
-                                            multiple="multiple" data-placeholder="Enter Tags"
-                                            style="width: 100%;">
-                                        </select>                          
+                                        <select class="form-control" id="tags" name="tags[]" multiple="multiple"
+                                            data-placeholder="Enter Tags" style="width: 100%;">
+                                        </select>
                                     </div>
                                     <div class="col-md-12 mt-2">
                                         <label>Description</label>
@@ -556,6 +560,7 @@
 $("#tags").select2({
     tags: true
 });
+$('#user').selectpicker();
 </script>
 
 </html>

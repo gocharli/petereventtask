@@ -25,6 +25,7 @@
                 <a href="<?php echo base_url(); ?>/user/logout" class="btn btn-danger">Logout</a>
                 <a href="<?php echo base_url(); ?>user/dashboard" class="btn btn-success">Go to Dashboard</a>
                 <a href="<?php echo base_url(); ?>Roadmap/index" class="btn btn-primary">View Roadmap</a>
+                <a href="<?php echo base_url(); ?>user/get_allusers" class="btn btn-info">View Users</a>
             </div>
         </div>
     </section>

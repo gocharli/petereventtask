@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-class User extends CI_Controller {
+class user_login extends CI_Controller {
  
 	function __construct(){
 		parent::__construct();
@@ -15,11 +15,6 @@ class User extends CI_Controller {
         $this->load->view('login', $this->data);
 	}
 
-	public function get_allusers(){
-		$data['allusers'] = $this->Users_model->getAllUsers();
-        $this->load->view('viewusers', $data);
-	}
- 
 	public function register(){
         // echo '<pre>';
         // print_r($_POST);
@@ -30,8 +25,7 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('password_confirm', 'Confirm Password', 'required|matches[password]');
  
         if ($this->form_validation->run() == FALSE) { 
-			$this->session->set_flashdata('error', 'Invalid Credentials');
-			redirect('User/get_allusers');
+         	$this->load->view('register', $this->data);
 		}
 		else{
 			//get user inputs
@@ -52,7 +46,7 @@ class User extends CI_Controller {
 			$id = $this->Users_model->insert($user);
  
                 //set up email and SMTP configuration
-            /*
+            
                 $mail = $this->phpmailer_lib->load();
         
                 $mail->isSMTP();
@@ -86,12 +80,11 @@ class User extends CI_Controller {
                 // Send email
                 if(!$mail->send()){
                     $this->session->set_flashdata('error', 'Something went wrong.Please try again later.'.$mail->ErrorInf);
-                        redirect('User/get_allusers');
+                        redirect('User/register');
                 }else{
 					$this->session->set_flashdata('success', 'User added Successfully');
-					redirect('User/get_allusers');
-                } */
-				
+					redirect('User/login');
+                }
 		}
  
 	}
@@ -123,75 +116,6 @@ class User extends CI_Controller {
 		redirect('register');
  
 	}
-
-    public function login(){
-
-		$email = $_POST['email'];
-		$password = $_POST['password'];
-
-		$data = $this->Users_model->login($email, $password);
- 
-		if($data){
-			$this->session->set_userdata('user', $data);
-			$this->session->set_flashdata('success','Login Successfully');
-			redirect('User/dashboard');
-		}
-		else{
-			
-			$this->session->set_flashdata('error','Invalid login. User not found');
-			redirect('User/login');
-		} 
-	}
- 
-	public function dashboard(){
-
-		//restrict users to go to home if not logged in
-		if($this->session->get_userdata('user')){
-			$user_data['user_data'] = $this->Users_model->getAllUsers();
-			$this->load->view('dashboard',$user_data);
-		}
-		else{
-			redirect('/');
-		}
- 
-	}
-	public function logout(){
-		//load session library
-		
-		$this->session->unset_userdata('user');
-		redirect('/');
-	}
-	public function update_user_profile(){
-		$user_id = $_POST['user_id'];
-		$result = $this->Users_model->getUser_profile($user_id);
-		
-		$data = array(
-			'username'=> $result['username'],
-			  'email'=> $result['email'],
-			  'password' => $result['password']
-			);		
-		echo json_encode($data);
-	}
-	public function up_insert(){
-		$user_id=$this->input->post('user_id');
-		$up_name=$this->input->post('up_name');
-		$up_email=$this->input->post('up_email');
-		$up_password=$this->input->post('up_password');
-		$data = array(
-			'username'=> $up_name,
-			'email'=> $up_email,
-			'password' => $up_password
-		);
-  
-			$this->Users_model->update_insert($data, $user_id);
-			
-	}
-	public function delete_user_profile($user_id){
-		if($user_id){
-			$this->Users_model->delete_profile($user_id);
-			redirect('user/get_allusers');
-		}
-	  }
 
 }
 ?>

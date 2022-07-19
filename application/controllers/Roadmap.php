@@ -25,35 +25,32 @@ class Roadmap extends CI_Controller{
                 if(!empty($fetch_mail)){
 
                     //set up email and SMTP configuration
-                    $mail = $this->phpmailer_lib->load();
-                    $mail->isSMTP();
-                    $mail->Host     = 'smtp.gmail.com';
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'parkerrosan001@gmail.com';
-                    $mail->Password = 'pArkEr001@';
-                    $mail->SMTPSecure = 'tls';
-                    $mail->Port     = 587;
-                    $mail->setfrom('parkerrosan001@gmail.com', 'Parker');
-                    $mail->addreplyto('parkerrosan001@gmail.com', 'Parker');
                     
-                    // Add a recipient
-                    $mail->addaddress('parkerrosan001@gmail.com');
+                    $config = array(
+                        'protocol' => 'smtp',
+                        'smtp_host' => 'smtp.hostinger.com', //'smtp.hostinger.com',
+                        'smtp_port' => '465',	//587,
+                        'smtp_user' => 'shahzad@appvelo.com',	//'shahzad@appvelo.com', // change it to yours
+                        'smtp_pass' => 'abcABC123!@#',	//'abcABC123!@#', // change it to yours
+                        'mailtype' => 'html',
+                        'charset' => 'iso-8859-1',
+                        'wordwrap' => TRUE
+                    );
 
-                     // Email subject
-                    $mail->Subject = 'Send Email using PHPMailer in CodeIgniter 3';
+                    $this->load->library('email',$config);
+                    $this->email->initialize($config);
+                    $this->email->from('shahzad@appvelo.com');
+                    $this->email->to($fetch_mail);
+                    // Email subject
+                    $this->email->subject('Send Email using PHPMailer in CodeIgniter 3');
+                    $this->email->message('Send HTML Email using SMTP in CodeIgniter');
                     
-                    // Set email format to HTML
-                    $mail->isHTML(true);
-                    
-                    // Email body content
-                    $mailContent = "<h1>Send HTML Email using SMTP in CodeIgniter</h1>
-                        <p>Hello hope you are doing well I am Parker Rosan Php web Developer. This is a test email sending using SMTP mail server using PHPMailer.</p>";
-                    $mail->Body = $mailContent;
                     
                     // Send email
-                    if(!$mail->send()){
-                        $this->session->set_flashdata('error', 'Something went wrong.Please try again later.'.$mail->ErrorInf);
-                        redirect('Roadmap/fetch_event');
+                    if(!$this->email->send()){
+                        
+                        echo $this->email->print_debugger();
+
                     }else{
                         $this->session->set_flashdata('success', 'Please check your Email .');
                         redirect('Roadmap/fetch_event');
