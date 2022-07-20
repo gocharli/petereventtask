@@ -3,6 +3,7 @@
 <?php
     $user = $this->session->userdata('user');
     extract($user);
+    
 
 	?>
 

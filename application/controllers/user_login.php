@@ -16,9 +16,6 @@ class user_login extends CI_Controller {
 	}
 
 	public function register(){
-        // echo '<pre>';
-        // print_r($_POST);
-        // exit;
         $this->form_validation->set_rules('username', 'Username', 'required');
 		$this->form_validation->set_rules('email', 'Email', 'valid_email|required');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[7]|max_length[30]');

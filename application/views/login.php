@@ -43,10 +43,11 @@
                 <?php
 				if($this->session->flashdata('error')){
 					?>
-                    <div class="alert alert-danger alert-dismissible text-center" role="alert" style="margin-top:20px;">
-                        <?php echo $this->session->flashdata('error'); ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                    <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                
+                    <?php
+                        echo  $this->session->flashdata('error'); ?>
                 <?php } ?>
             </div>
         </div>

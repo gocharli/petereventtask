@@ -16,14 +16,17 @@ class User extends CI_Controller {
 	}
 
 	public function get_allusers(){
-		$data['allusers'] = $this->Users_model->getAllUsers();
-        $this->load->view('viewusers', $data);
+		if (!$this->session->userdata('user'))  {
+            redirect('User/index');
+        }else{
+			$data['allusers'] = $this->Users_model->getAllUsers();
+			$this->load->view('viewusers', $data);
+        }
+
+		
 	}
  
 	public function register(){
-        // echo '<pre>';
-        // print_r($_POST);
-        // exit;
         $this->form_validation->set_rules('username', 'Username', 'required');
 		$this->form_validation->set_rules('email', 'Email', 'valid_email|required');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[7]|max_length[30]');
@@ -50,49 +53,39 @@ class User extends CI_Controller {
 			$user['code'] = $code;
 			$user['active'] = false;
 			$id = $this->Users_model->insert($user);
- 
-                //set up email and SMTP configuration
-            /*
-                $mail = $this->phpmailer_lib->load();
-        
-                $mail->isSMTP();
-                $mail->Host     = 'smtp.gmail.com';
-                $mail->SMTPAuth = true;
-                $mail->Username = 'parkerrosan001@gmail.com';
-                $mail->Password = 'pArkEr001@';
-                $mail->SMTPSecure = 'tls';
-                $mail->Port     = 587;
-                $mail->setfrom('parkerrosan001@gmail.com', 'Parker');
-                $mail->addreplyto('parkerrosan001@gmail.com', 'Parker');
-                
-                // Add a recipient
-                $mail->addaddress('parkerrosan001@gmail.com');
-                
-                // Add cc or bcc 
-                // $mail->addcc('cc@example.com');
-                // $mail->addbcc('bcc@example.com');
-                
-                // Email subject
-                $mail->Subject = 'Send Email using PHPMailer in CodeIgniter 3';
-                
-                // Set email format to HTML
-                $mail->isHTML(true);
-                
-                // Email body content
-                $mailContent = "<h1>Send HTML Email using SMTP in CodeIgniter</h1>
-                    <p>Hello hope you are doing well I am Parker Rosan Php web Developer. This is a test email sending using SMTP mail server using PHPMailer.</p>";
-                $mail->Body = $mailContent;
-                
-                // Send email
-                if(!$mail->send()){
-                    $this->session->set_flashdata('error', 'Something went wrong.Please try again later.'.$mail->ErrorInf);
-                        redirect('User/get_allusers');
-                }else{
-					$this->session->set_flashdata('success', 'User added Successfully');
-					redirect('User/get_allusers');
-                } */
+			//set up email and SMTP configuration
+                    
+			$config = array(
+				'protocol' => 'smtp',
+				'smtp_host' => 'smtp.hostinger.com', //'smtp.hostinger.com',
+				'smtp_port' => '587',	//587,
+				'smtp_user' => 'shahzad@appvelo.com',	//'shahzad@appvelo.com', // change it to yours
+				'smtp_pass' => 'abcABC123!@#',	//'abcABC123!@#', // change it to yours
+				'mailtype' => 'html',
+				'charset' => 'iso-8859-1',
+				'wordwrap' => TRUE
+			);
+
+			$this->load->library('email',$config);
+			$this->email->set_newline("\r\n");
+			$this->email->initialize($config);
+			$this->email->from('shahzad@appvelo.com');
+			$this->email->to($email);
+			// Email subject
+			$this->email->subject('Send Email using PHPMailer in CodeIgniter 3');
+			$this->email->message('Send HTML Email using SMTP in CodeIgniter');
+			
+			
+			// Send email
+			if(!$this->email->send()){
 				
-		}
+				echo $this->email->print_debugger();
+
+			}else{
+				$this->session->set_flashdata('success', 'Please check your Email .');
+				redirect('user_login/register');
+			}
+        }
  
 	}
  
@@ -139,39 +132,48 @@ class User extends CI_Controller {
 		else{
 			
 			$this->session->set_flashdata('error','Invalid login. User not found');
-			redirect('User/login');
+			redirect('User/index');
 		} 
 	}
  
 	public function dashboard(){
-
-		//restrict users to go to home if not logged in
-		if($this->session->get_userdata('user')){
+		if (!$this->session->userdata('user'))  {
+            redirect('User/index');
+        }else{
+			//restrict users to go to home if not logged in
+			$this->session->get_userdata('user');
 			$user_data['user_data'] = $this->Users_model->getAllUsers();
 			$this->load->view('dashboard',$user_data);
-		}
-		else{
-			redirect('/');
-		}
+        }
  
 	}
+
 	public function logout(){
 		//load session library
 		
 		$this->session->unset_userdata('user');
 		redirect('/');
 	}
+
 	public function update_user_profile(){
-		$user_id = $_POST['user_id'];
-		$result = $this->Users_model->getUser_profile($user_id);
+		//restrict users to go to home if not logged in
+		if (!$this->session->userdata('user'))  {
+            redirect('User/index');
+        }else{
+			
+			$user_id = $_POST['user_id'];
+			$result = $this->Users_model->getUser_profile($user_id);
+			
+			$data = array(
+				'username'=> $result['username'],
+				'email'=> $result['email'],
+				'password' => $result['password']
+				);		
+			echo json_encode($data);
+        }
 		
-		$data = array(
-			'username'=> $result['username'],
-			  'email'=> $result['email'],
-			  'password' => $result['password']
-			);		
-		echo json_encode($data);
 	}
+
 	public function up_insert(){
 		$user_id=$this->input->post('user_id');
 		$up_name=$this->input->post('up_name');
@@ -186,12 +188,13 @@ class User extends CI_Controller {
 			$this->Users_model->update_insert($data, $user_id);
 			
 	}
+	
 	public function delete_user_profile($user_id){
 		if($user_id){
 			$this->Users_model->delete_profile($user_id);
 			redirect('user/get_allusers');
 		}
-	  }
+	}
 
 }
 ?>

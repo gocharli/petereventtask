@@ -41,7 +41,15 @@ class Users_model extends CI_Model {
 
 	public function login($email, $password){
 		$query = $this->db->get_where('users', array('email'=>$email, 'password'=>$password));
-			return $query->row_array();
+		$result = $query->row_array();
+		if($result){
+			$this->session->set_flashdata('success', 'Login successfully');
+			redirect('user/dashboard');
+		}
+		else{
+			$this->session->set_flashdata('error', 'Invalid Login!!');
+			redirect('user/index');
+		}
 	}
 	public function update_profile($data,$user_id){
 		$this->db->where('user_id', $user_id);
