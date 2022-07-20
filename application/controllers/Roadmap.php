@@ -8,13 +8,23 @@ class Roadmap extends CI_Controller{
         $this->load->model('Roadmap_model');
     }
 
-    public function index(){    
-        $data['event_data'] = $this->Roadmap_model->fetch_all_event();
-        $this->load->view('roadmap',$data);
+    public function index(){ 
+        if (!$this->session->userdata('user'))  {
+            redirect('User/index');
+        }else{
+			//restrict users to go to home if not logged in
+            $data['event_data'] = $this->Roadmap_model->fetch_all_event();
+            $this->load->view('roadmap',$data);
+        }   
+        
     }
-    public function fetch_event(){    
-        $data['event_data'] = $this->Roadmap_model->fetch_all_event();
-        $this->load->view('viewevents',$data);
+    public function fetch_event(){
+        if (!$this->session->userdata('user'))  {
+            redirect('User/index');
+        }else{    
+            $data['event_data'] = $this->Roadmap_model->fetch_all_event();
+            $this->load->view('viewevents',$data);
+        }
     }
     public function sendmail($event_id){ 
         $data = $this->Roadmap_model->sendmail_event($event_id);
@@ -29,15 +39,16 @@ class Roadmap extends CI_Controller{
                     $config = array(
                         'protocol' => 'smtp',
                         'smtp_host' => 'smtp.hostinger.com', //'smtp.hostinger.com',
-                        'smtp_port' => '465',	//587,
+                        'smtp_port' => '587',	//587,
                         'smtp_user' => 'shahzad@appvelo.com',	//'shahzad@appvelo.com', // change it to yours
                         'smtp_pass' => 'abcABC123!@#',	//'abcABC123!@#', // change it to yours
                         'mailtype' => 'html',
                         'charset' => 'iso-8859-1',
                         'wordwrap' => TRUE
                     );
-
+        
                     $this->load->library('email',$config);
+                    $this->email->set_newline("\r\n");
                     $this->email->initialize($config);
                     $this->email->from('shahzad@appvelo.com');
                     $this->email->to($fetch_mail);
